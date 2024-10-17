@@ -41,7 +41,6 @@ function Replications({onReplicationSelect }) {
   ];
 
   const getreplications = async () => {
-    console.log("hello");
 
     let data = {};
 
