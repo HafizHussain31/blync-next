@@ -26,6 +26,7 @@ import ChartComponent from "../components/ChartComponent";
 import Home from "../components/home";
 import Replications from "../components/replications";
 
+
 function Board() {
 
   const [configPageVisible, setConfigPageVisible] = useState(true);
