@@ -1,0 +1,63 @@
+@import "../../theme/fonts.scss";
+@import "../../theme/variables.scss";
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.login-content {
+  width: 327px;
+  height: 368px;
+  text-align: center;
+  .content-title {
+    font-size: 24px;
+    font-weight: 600;
+    font-family: "Open-Sans";
+    color: $secondary-color;
+  }
+  .login-text {
+    font-weight: 400;
+    font-size: 18px;
+    font-family: "Open-Sans";
+    color: $secondary-color;
+  }
+  // border: 1px solid black;
+}
+
+.login-input-container {
+  width: 100%;
+  margin: 15px 0;
+  text-align: start;
+}
+.login-input-label {
+  margin-bottom: 5px;
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 400;
+  color: $primary-color;
+  font-family: "Open-Sans";
+}
+.login-checkbox-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.login-checkbox-label {
+  font-family: "Open-Sans";
+  font-size: 14px;
+  vertical-align: middle;
+  margin-left: 15px;
+  color: $primary-color;
+  white-space: nowrap;
+}
+.login-forgot-text {
+  font-family: "Open-Sans";
+  font-size: 14px;
+  text-decoration: underline;
+  line-height: 16.34px;
+  cursor: pointer;
+  font-weight: 700;
+  // margin-left: 15px;
+  color: $primary-color;
+}

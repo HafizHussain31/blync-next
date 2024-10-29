@@ -1,0 +1,271 @@
+$sidebar-width: 8%;
+$collapsed-width: 6%;
+$background-color: white;
+$hover-color: #f0f0f0;
+$icon-color: #333;
+$font-color: #333;
+$menu-padding: 10px 0;
+$transition-speed: 0.3s;
+
+@import "../../theme/variables.scss";
+
+.sidebar {
+  background-color: $background-color;
+  height: 100%;
+  padding: 20px;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: width $transition-speed ease;
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+  border-top-right-radius: 40px;
+  border-bottom-right-radius: 40px;
+
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  transition: .5s;
+  width: 15%;
+
+  &.collapsed {
+    width: $collapsed-width;
+  }
+}
+
+@media (max-width: 600px) {
+  .sidebar {
+    width: 18%;
+
+    &.collapsed {
+      width: 8%;
+    }
+  }
+}
+
+/* Sidebar width for medium screens */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .sidebar {
+    width: 18%;
+
+    &.collapsed {
+      width: 8%;
+    }
+  }
+}
+
+/* Sidebar width for larger screens */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .sidebar {
+    width: 18%;
+
+    &.collapsed {
+      width: 8%;
+    }
+  }
+}
+/* Sidebar width for larger screens */
+@media (min-width: 1441px) and (max-width: 1920px) {
+  .sidebar {
+    width: 13%;
+
+    &.collapsed {
+      width: $collapsed-width;
+    }
+  }
+}
+
+/* Sidebar width for larger screens */
+@media (min-width: 1921px) {
+  .sidebar {
+    width: 12%;
+
+    &.collapsed {
+      width: $collapsed-width;
+    }
+  }
+}
+
+.side-bar-container {
+  height: 100%;
+  width: 15%;
+  position: fixed;
+  top: 0;
+  box-shadow: -31px -24px 33px 12px rgb(107, 107, 107);
+  left: 0;
+  background-color: $secondary-color;
+  transition: 0.5s;
+}
+
+.sidebar-image-container {
+  border-bottom: 2px solid $border;
+  height: 62px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.sidebar-icon {
+  width: 20px;
+  height: 20px;
+  color: red;
+}
+
+.active-label {
+  letter-spacing: 0.02em;
+  color: #009BEE !important;
+  transition: display 0.01s;
+  margin-left: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: "Open-Sans";
+}
+
+.in-active-label {
+  transition: display 0.01s;
+  letter-spacing: 0.02em;
+  color: #8a92a6;
+  margin-left: 12px;
+  font-weight: 500;
+  font-size: 16px;
+  font-family: "Open-Sans";
+}
+
+.active-sidebar-item {
+  background-color: #F6F6F6 !important;
+  border-radius: 10px !important;
+  padding: 15px 10px 15px 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+.in-active-sidebar-item {
+  padding: 15px 10px 15px 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+.active-icon {
+  width: 20px;
+  height: 20px;
+  fill: red;
+}
+
+.side-bar-list {
+  display: flex;
+  align-items: center;
+  transition: all 0.1s ease-in-out;
+}
+
+.menu-list {
+  margin-top: 10px;
+  transition: width 0.1s ease-in-out;
+  display: flex;
+  flex-direction: column;
+}
+
+
+span {
+  transition: opacity 0.1s ease-in-out;
+}
+
+.menu-list.collapsed span {
+  opacity: 0;
+  /* Hide text smoothly */
+  width: 0;
+  overflow: hidden;
+}
+
+.logout-side-bar-list {
+  margin-left: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.item-side-bar {
+  margin-top: 20px;
+  height: 80%;
+}
+
+.side-bar-logo {
+  width: 62.67px;
+  height: 45.33px;
+  margin-left: 20px;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.bottom-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+
+span {
+  font-family: 'Open-Sans';
+}
+
+.logo-sidebar {
+  width: 50px;
+  height: 50px;
+}
+
+.image-container {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.collapse-btn {
+  position: absolute;
+  padding: 9px 10px 9px 10px;
+  align-self: center;
+  right: -20px;
+  top: 50px;
+  background-color: white;
+  border-radius: 50px;
+  box-shadow: 0px 5px 10px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-container {
+  transition: opacity 0.8s ease, max-height 0.9999s ease;
+  justify-content: center;
+  display: flex;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  align-items: center;
+}
+
+.show-profile {
+  opacity: 1;
+  max-height: 200px;
+  /* Adjust as needed */
+}
+
+.hide-profile {
+  opacity: 0;
+  max-height: 0;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  /* Stacks the image and text vertically */
+  justify-content: center;
+  /* Centers content vertically within the profile */
+  align-items: center;
+}
+
+.user-name {
+  font-family: 'Open-Sans';
+  margin-bottom: 10px;
+}
+
+.role {
+  font-family: 'Open-Sans';
+  font-size: 14px;
+  color: #A5A5A5;
+}

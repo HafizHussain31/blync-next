@@ -1,0 +1,71 @@
+@import "../../theme/fonts.scss";
+@import "../../theme/variables.scss";
+
+.header-container {
+  width: 85%;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 15%;
+  padding: 0 40px 0 25px;
+  position: fixed;
+  top: 0;
+  right: 150px;
+  left: 0;
+  background-color: $white;
+  margin-bottom: 70px;
+  z-index: 10;
+  .header-title {
+    font-family: "Open-Sans";
+    color: $secondary-color;
+    font-weight: 600;
+    font-size: 20px;
+    padding-top: 10px;
+  }
+  .header-icon-container {
+    display: flex;
+    justify-content: flex-end;
+    // width: 15%;
+    // margin-right: 15px;
+    .bell-icon {
+      width: 30px;
+      height: 30px;
+      margin-top: 2px;
+      cursor: pointer;
+    }
+    .profile-picture {
+      width: 35px;
+      height: 35px;
+      margin-left: 20px;
+      cursor: pointer;
+      border-radius: 50px;
+    }
+    .down-icon {
+      width: 24px;
+      height: 24px;
+      margin-left: 20px;
+    }
+  }
+}
+.bell-icon-container {
+  position: relative;
+
+  .count-container {
+    position: absolute;
+    bottom: 22px;
+    left: 18px;
+    width: 10px;
+    height: 10px;
+    clip-path: circle();
+    background-color: $red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .count-text {
+    color: $white;
+    font-size: 12px;
+    font-family: "Open-Sans";
+  }
+}

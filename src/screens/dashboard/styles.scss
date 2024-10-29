@@ -1,0 +1,23 @@
+@import "../../theme/fonts.scss";
+@import "../../theme/variables.scss";
+
+.dashboard-container {
+  width: 100%;
+
+  .dashboard-title {
+    font-family: "Open-Sans";
+    font-weight: 600;
+    font-size: 24px;
+    color: $secondary-color;
+  }
+}
+
+
+.chart-component-container{
+  width: 50%;
+  box-sizing: border-box;
+}
+
+.item{
+  margin-top: 30px;
+}

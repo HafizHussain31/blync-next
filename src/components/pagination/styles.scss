@@ -1,0 +1,50 @@
+@import "../../theme/variables.scss";
+@import "../../theme/fonts.scss";
+
+.customer-pagination-container {
+  border: none !important;
+}
+.pagination-icon {
+  width: 22px;
+  height: 22px;
+  // margin-bottom: 5px;
+}
+
+.custom-page-link {
+  margin: 0 10px;
+  text-decoration: none;
+  font-size: 14px;
+  color: inherit;
+  font-family: "Open-Sans";
+  &:hover {
+    color: inherit !important;
+  }
+}
+.custom-page-item {
+  width: 28px;
+  height: 28px;
+  background-color: transparent;
+  margin: 0 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $primary-color;
+  &:hover {
+    color: inherit;
+  }
+}
+.pagination-active {
+  background-color: $primary-color;
+  color: $white;
+  border: 1px solid $primary-color;
+  border-radius: 4px;
+  &:hover {
+    color: inherit !important;
+  }
+}
+.pagination-text {
+  font-weight: 400;
+  font-size: 14px;
+  color: $primary-color;
+  font-family: "Open-Sans";
+}

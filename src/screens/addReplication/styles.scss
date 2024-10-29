@@ -1,0 +1,47 @@
+@import "../../theme/fonts.scss";
+@import "../../theme/variables.scss";
+
+.back-to-user-container{
+  display: flex;
+  align-items: center;
+  cursor: pointer !important;
+  :hover{
+    cursor: pointer !important;
+  }
+}
+
+.left-icon{
+  width: 16px;
+  height: 16px;
+}
+
+.back-to-user{
+  font-family: 'Open-Sans';
+  margin-left: 10px;
+  color: $primary-color;
+  text-decoration: underline;
+  font-weight: 600;
+  cursor: pointer !important;
+}
+.title-add-replication{
+  margin-top: 20px;
+}
+
+.edit-replication-details{
+  font-size: 24px;
+  font-family: 'Open-Sans';
+  margin-left: 5px;
+}
+
+.center-button{
+  display: flex;
+  justify-content: center;
+}
+
+.form-title{
+  font-family: 'Open-Sans';
+  color: $primary-color;
+  font-weight: 600;
+  font-size: 24px;
+  text-decoration: underline;
+}

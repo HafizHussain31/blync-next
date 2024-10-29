@@ -1,0 +1,17 @@
+@import "../../theme/variables.scss";
+@import "../../theme/fonts.scss";
+
+
+.notification-table-icon {
+    width: 14px;
+    height: 14px;
+    margin-bottom: 3px;
+    margin-left: 5px;
+}
+
+
+.content-info {
+    color: $black;
+    font-family: 'Open-Sans';
+    text-align: center;
+}

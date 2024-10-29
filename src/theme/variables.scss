@@ -1,0 +1,73 @@
+$primary-color: #009BEE;
+$secondary-color: #351c75;
+$white: #ffffff;
+$black: #000000;
+$grey: #8a92a6;
+$green: #4ecd83;
+$grey-F5F6FA: #f5f6fa;
+$background-white: #ffffff;
+$navy-blue: #232d42;
+$grey-F5F6FA: #f5f6fa;
+$gray-sideBar: #bdbdbd;
+$border: #f2f3f7;
+$menu_icon: #8a92a6;
+$red: #cf0000;
+$yellow: #e0b105;
+$border-color: #dedede;
+
+$myColors: (
+  "white": $white,
+  "grey": $gray-sideBar,
+  "grey-82": $grey,
+  "green": $green,
+  "primary-color": $primary-color,
+);
+@each $name, $colors in $myColors {
+  $index: index($myColors, $colors);
+
+  .text-#{$name} {
+    color: $colors;
+  }
+
+  .bg-#{$name} {
+    background-color: $colors;
+  }
+
+  .bc-#{$name} {
+    border-color: $colors;
+  }
+}
+
+$full-height: 100vh;
+
+.text-black {
+  color: $black;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.makeStyles-toolbar-151 {
+  min-height: 0px !important;
+}
+
+.makeStyles-drawer-147 {
+  width: 220px !important;
+}
+
+.makeStyles-content-8 {
+  margin-left: 22px !important;
+}
+
+.ant-select-selector {
+  border: none !important;
+}
+
+.ant-switch-checked {
+  background-color: #0655a3 !important;
+}
+
+body {
+  background-color: #ffffff !important;
+}
