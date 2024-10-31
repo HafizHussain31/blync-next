@@ -1,40 +1,66 @@
 import React, { useEffect, useState } from "react";
 import "./styles.scss";
-import DropDownComponent from "../../components/dropDown";
-import PrimaryButton from "../../components/primaryButton";
-import InputField from "../../components/inputField";
-import TableComponent from "../../components/table";
+import Highcharts, { chart } from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
 
 const Dashboard = () => {
-  
-  const headerDetails = [
-    { label: "Content Id" },
-    { label: "Title" },
-    { label: "Icon" },
-    { label: "Media File" },
-    { label: "Duration" },
-    { label: "Action" },
-  ];
+
+  const options = {
+    title: {
+      text: 'My chart'
+    },
+    series: [
+      {
+        data: [1, 2, 1, 4, 3, 6]
+      }
+    ]
+  };
+
+
   return (
     <div className="dashboard-container">
       <div className="dashboard-title">
         <p>Dashboard</p>
-        {/* <DropDownComponent
-          options={[{ label: 'Yes', value: "true" },
-            { label: 'No', value: "false" }]}/>
-
-            <div className="item"></div>
-
-            <PrimaryButton
-              label={'Submit'}/>
-              
-            <div className="item"></div>
-
-            <InputField
-              type={'number'}/>
-            <div className="item"></div>
-
-              <TableComponent headerDetails={headerDetails}></TableComponent> */}
+        <div className="row">
+          <div className="col-6">
+            <HighchartsReact
+              highcharts={Highcharts} options={{
+                ...options,
+                chart: {
+                  type: "spline"
+                }
+              }} />
+          </div>
+          <div className="col-6">
+            <HighchartsReact
+              highcharts={Highcharts} options={{
+                ...options,
+                chart: {
+                  type: "bar"
+                }
+              }} />
+          </div>
+          <div className="row mt-5">
+            <div className="col-6">
+              <HighchartsReact
+                highcharts={Highcharts} options={{
+                  ...options,
+                  chart: {
+                    type: "pie"
+                  }
+                }} />
+            </div>
+            <div className="col-6">
+              <HighchartsReact
+                highcharts={Highcharts} options={{
+                  ...options,
+                  chart: {
+                    type: "area"
+                  }
+                }} />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
