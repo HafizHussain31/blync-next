@@ -1,0 +1,20 @@
+1. connection name
+2. Source DB
+3. Destination DB
+4. Source Settings
+5. Desti Settings
+
+
+1. What is kafka restart? -- No need to restart, add the connectors again\
+
+2. if restarted, will it continue from the same place it stopped? 
+If you restart the kafka connect, and add connectors with the same name, ofsset does not change. so it works normal.
+
+ But, what if in between some data changes to table.
+ -- cdc will still have the changed updates in queue till the connectors goes up.
+
+ So, adding connectors with same name will resume the replication from the place it started.
+
+3. What happens to the topics? Topics will remanin in the place of kak-logs folder, by default it stays on tmp folder, but if changed on logs.dir in config folder, this could be persisted. 
+4. how to restart -- just add the connectors again.
+5. Dynamically take the id -- pending. 

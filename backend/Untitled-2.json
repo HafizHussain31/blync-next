@@ -1,0 +1,21 @@
+{
+  "name": "http-sink-test",
+  "config": {
+    "connector.class": "io.aiven.kafka.connect.http.HttpSinkConnector",
+    "topics.regex": "server201001.*",
+    "http.authorization.type": "none",
+    "http.url": "http://localhost:8087/fromtopic",
+    "batching.enabled": true,
+    "batch.max.size": 2,
+    "tasks.max": "1",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter"
+  }
+}
+
+
+curl -d @connect-http-sink.json -H "Content-Type: application/json" -X POST http://localhost:8083/connectors
+
+
+1
+kafka-topics.sh --bootstrap-server localhost:9092 --topic server201001.dbo --create --partitions 3 --replication-factor 1

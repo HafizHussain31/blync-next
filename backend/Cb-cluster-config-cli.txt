@@ -1,0 +1,72 @@
+Absher Cluster Configuration using CLI
+
+Couchbase CLI commands
+
+1.  Cluster Initialization and addition of first node
+
+couchbase-cli cluster-init -c hostname --cluster-username Administrator \
+ --cluster-password password --services data,eventing \
+ --cluster-ramsize 2048 \
+ --cluster-eventing-ramsize 1024 \
+--cluster-eventing-ramsize 1024 \
+--cluster-query-ramsize 1024 \
+
+2.  Addition of subsequent nodes to cluster and rebalance. 
+
+couchbase-cli server-add -c hostname:8091 \
+--username Administrator \
+--password password \
+--server-add couchbases://10.142.181.102 \
+--server-add-username Administrator \
+--server-add-password password \
+--services data,eventing
+
+couchbase-cli server-add -c hostname:8091 \
+--username Administrator \
+--password password \
+--server-add couchbases://10.142.181.103 \
+--server-add-username Administrator \
+--server-add-password password \
+--services data,eventing
+
+couchbase-cli server-add -c hostname:8091 \
+--username Administrator \
+--password password \
+--server-add couchbases://10.142.181.104 \
+--server-add-username Administrator \
+--server-add-password password \
+--services data,eventing
+
+couchbase-cli server-add -c hostname:8091 \
+--username Administrator \
+--password password \
+--server-add couchbases://10.142.181.105 \
+--server-add-username Administrator \
+--server-add-password password \
+--services query,index \
+--index-storage-setting dafault
+
+couchbase-cli server-add -c hostname:8091 \
+--username Administrator \
+--password password \
+--server-add couchbases://10.142.181.106 \
+--server-add-username Administrator \
+--server-add-password password \
+--services query,index
+
+couchbase-cli server-add -c hostname:8091 \
+--username Administrator \
+--password password \
+--server-add couchbases://10.142.181.107 \
+--server-add-username Administrator \
+--server-add-password password \
+--services backup
+
+3.  Rebalance
+
+couchbase-cli rebalance -c hostname:8091 \
+--username Administrator \
+--password password
+
+
+
