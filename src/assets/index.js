@@ -9,6 +9,10 @@ const Images = {
     left_icon: require("./icons/left_icon.png"),
     eye: require("./icons/eye.png"),
     hide_icon: require("./icons/hide.png"),
+    rising_chart: require("./icons/rising_chart.png"),
+    social: require("./icons/social.png"),
+    time: require("./icons/time.png"),
+    twitter: require("./icons/twitter.png"),
   };
   
   const Lottie = {

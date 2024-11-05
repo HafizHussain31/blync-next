@@ -13,11 +13,68 @@
 }
 
 
-.chart-component-container{
+.chart-component-container {
   width: 50%;
   box-sizing: border-box;
 }
 
-.item{
+.item {
   margin-top: 30px;
+}
+
+.total-revenue {
+  font-family: "Open-Sans";
+  font-weight: 600;
+  font-size: 18px;
+  color: $text-grey;
+}
+
+.card-container-dashboard{
+  padding: 10px;
+  border-radius: 10px !important;
+}
+
+.tr-amt{
+  font-family: "Open-Sans";
+  font-size: 22px;
+  color: #807BEF;
+}
+
+.tr-hrs{
+  font-family: "Open-Sans";
+  font-size: 14px;
+  color: $text-grey;
+}
+
+.tr-icon{
+  width: 20px;
+  height: 20px;
+}
+
+.sm-title{
+  font-family: "Open-Sans";
+  font-weight: 600;
+  font-size: 18px;
+  color: $text-grey;
+  text-align: center;
+}
+
+.outline{
+  border: 0.5px solid $text-grey;
+  border-radius: 50px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sm-count{
+  font-family: "Open-Sans";
+  font-size: 12px;
+  color: $text-grey;
+}
+
+.donut-chart{
+  flex-grow: 1;
 }
