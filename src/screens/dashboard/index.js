@@ -3,12 +3,14 @@ import "./styles.scss";
 import Highcharts, { chart } from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { Card } from "@mui/material";
-import ExportedData from '../../assets'
+import ExportedData from '../../assets';
+import incomingData from '../../sampleData/incomingmessages.json';
+
 const Dashboard = () => {
 
   const options = {
     title: {
-      text: 'My chart'
+      text: ''
     },
     series: [
       {
@@ -18,123 +20,275 @@ const Dashboard = () => {
     credits: false
   };
 
+  const [incomingChartData, setIncomingChartData] = useState();
+
+  const [outgoingChartData, setOutgoingChartData] = useState();
+
+  const [lagChartData, setLagChartData] = useState();
+
+  const [cpuChartData, setCpuChartData] = useState();
+
+  const [memoryChartData, setMemoryChartData] = useState();
+
+
+  useEffect(() => {
+    getChartData();
+  }, []);
+
+  const getChartData = () => {
+
+    let incoming = incomingData.slice(1).map((a, i) => {
+      const { totaloffset, createdDate } = a;
+      return {
+        x: new Date(createdDate).getTime(),
+        y: totaloffset - incomingData[i].totaloffset,
+      };
+    });
+
+    console.log(incoming, 'incoming');
+    
+
+    let outgoingData = incomingData.slice(1).map((a, i) => {
+      const { currentoffset, createdDate } = a;
+      return {
+        x: new Date(createdDate).getTime(),
+        y: currentoffset - incomingData[i].currentoffset,
+      };
+    });
+
+    let lagData = incomingData.slice(1).map((a, i) => {
+      const { lag, createdDate } = a;
+      return {
+        x: new Date(createdDate).getTime(),
+        y: lag
+      };
+    });
+
+    let incomingChart = {
+      chart: {
+        type: "line",
+      },
+      credits: {
+        enabled: false,
+      },
+      plotOptions: {
+        series: {
+          marker: {
+            enabled: false,
+            states: {
+              hover: {
+                enabled: false,
+              },
+            },
+          },
+        },
+      },
+      title: {
+        text: "Incoming Messages",
+      },
+      series: [
+        {
+          // `type: column` is required for type-checking this options as a column series
+          type: "line",
+          data: incomingData,
+        },
+      ],
+      xAxis: [
+        {
+          type: "datetime",
+        },
+      ],
+    };
+
+    let outgoingChart = {
+      chart: {
+        type: "area",
+      },
+      credits: {
+        enabled: false,
+      },
+      plotOptions: {
+        series: {
+          fillOpacity: 0.2,
+          marker: {
+            enabled: false,
+            states: {
+              hover: {
+                enabled: false,
+              },
+            },
+          },
+        },
+      },
+      title: {
+        text: "Outgoing Messages",
+      },
+      series: [
+        {
+          // `type: column` is required for type-checking this options as a column series
+          type: "area",
+          data: incomingData,
+          color: "purple"
+        },
+      ],
+      xAxis: [
+        {
+          type: "datetime",
+        },
+      ],
+    };
+
+    let lagChart = {
+      chart: {
+        type: "line",
+      },
+      credits: {
+        enabled: false,
+      },
+      plotOptions: {
+        series: {
+          marker: {
+            enabled: false,
+            states: {
+              hover: {
+                enabled: false,
+              },
+            },
+          },
+        },
+      },
+      title: {
+        text: "Messages in Queue",
+      },
+      series: [
+        {
+          // `type: column` is required for type-checking this options as a column series
+          type: "line",
+          data: incomingData,
+          color: "red"
+        },
+      ],
+      xAxis: [
+        {
+          type: "datetime",
+        },
+      ],
+    };
+
+    let cpuChart = {
+      chart: {
+        type: "area",
+      },
+      credits: {
+        enabled: false,
+      },
+      plotOptions: {
+        series: {
+          fillOpacity: 0.2,
+          marker: {
+            enabled: false,
+            states: {
+              hover: {
+                enabled: false,
+              },
+            },
+          },
+        },
+      },
+      title: {
+        text: "Outgoing Messages",
+      },
+      series: [
+        {
+          // `type: column` is required for type-checking this options as a column series
+          type: "area",
+          data: incomingData,
+          color: "green"
+        },
+      ],
+      xAxis: [
+        {
+          type: "datetime",
+        },
+      ],
+    };
+
+    let memoryChart = {
+      chart: {
+        type: "area",
+      },
+      credits: {
+        enabled: false,
+      },
+      plotOptions: {
+        series: {
+          fillOpacity: 0.2,
+          marker: {
+            enabled: false,
+            states: {
+              hover: {
+                enabled: false,
+              },
+            },
+          },
+        },
+      },
+      title: {
+        text: "Outgoing Messages",
+      },
+      series: [
+        {
+          // `type: column` is required for type-checking this options as a column series
+          type: "area",
+          data: incomingData,
+          color: "orange"
+        },
+      ],
+      xAxis: [
+        {
+          type: "datetime",
+        },
+      ],
+    };
+
+    setIncomingChartData(incomingChart);
+    setOutgoingChartData(outgoingChart);
+    setLagChartData(lagChart);
+    setCpuChartData(cpuChart);
+    setMemoryChartData(memoryChart);
+    
+  }
 
   return (
     <div className="dashboard-container">
       <div className="dashboard-title">
         <p>Dashboard</p>
-        {/* <div className="row">
-
-          <div className="col-6">
-            <div className="row align-items-stretch">
-
-              <div className="col-5">
-
-                <Card className="card-container-dashboard">
-                  <label className="total-revenue">Total Revenue ($)</label>
-                  <label className="tr-amt mt-2">$ 24,165</label>
-                  <div className="d-flex align-items-center justify-content-between mt-2">
-                    <label className="tr-hrs">24 hours</label>
-                    <img src={ExportedData.Icons.time} className="tr-icon" />
-                  </div>
-                </Card>
-
-                <Card className="card-container-dashboard mt-3 d-flex flex-column align-items-center">
-                  <label className="sm-title">Social Media</label>
-                  <div className="d-flex align-items-center justify-content-between mt-2">
-                    <div className="outline">
-                      <img src={ExportedData.Icons.social} className="tr-icon" />
-                    </div>
-                    <label className="sm-count">&nbsp;5.68K &nbsp; 3.84K&nbsp;</label>
-                    <div className="outline">
-                      <img src={ExportedData.Icons.twitter} className="tr-icon" />
-                    </div>
-                  </div>
-                </Card>
-
-              </div>
-
-              <div className="col-7">
-                <Card className="card-container-dashboard d-flex flex-column">
-                  <label className="sm-title">Category Wise Breakup</label>
-                  <div className="d-flex flex-column align-items-center donut-chart">
-                    <HighchartsReact
-                      highcharts={Highcharts} options={{
-                        ...options,
-                      }} />
-                  </div>
-                </Card>
-
-              </div>
-
-            </div>
-
-          </div>
-
-          <div className="col-7">
-
-          </div>
-
-        </div> */}
-        {/* <div className="row">
-
-          <div className="col-5">
-
-          </div>
-
-          <div className="col-7">
-
-          </div>
-
-        </div>
-        <div className="row">
-
-          <div className="col-6">
-
-          </div>
-
-          <div className="col-6">
-
-          </div>
-
-        </div> */}
         <div className="row">
           <div className="col-6">
-            <HighchartsReact
-              highcharts={Highcharts} options={{
-                ...options,
-                chart: {
-                  type: "spline"
-                }
-              }} />
+            <Card className="card-container-dashboard">
+              {incomingChartData && <HighchartsReact
+                highcharts={Highcharts}
+                options={incomingChartData} />}
+            </Card>
           </div>
           <div className="col-6">
-            <HighchartsReact
-              highcharts={Highcharts} options={{
-                ...options,
-                chart: {
-                  type: "bar"
-                }
-              }} />
+            <Card className="card-container-dashboard">
+              {outgoingChartData && <HighchartsReact
+                highcharts={Highcharts} options={outgoingChartData} />}
+            </Card>
           </div>
           <div className="row mt-5">
             <div className="col-6">
-              <HighchartsReact
-                highcharts={Highcharts} options={{
-                  ...options,
-                  chart: {
-                    type: "pie"
-                  }
-                }} />
+            <Card className="card-container-dashboard">
+              {lagChartData && <HighchartsReact
+                highcharts={Highcharts} options={lagChartData} />}
+                </Card>
             </div>
             <div className="col-6">
-              <HighchartsReact
-                highcharts={Highcharts} options={{
-                  ...options,
-                  chart: {
-                    type: "area"
-                  }
-                }} />
+            <Card className="card-container-dashboard">
+             {cpuChartData && <HighchartsReact
+                highcharts={Highcharts} options={cpuChartData} />}
+                </Card>
             </div>
           </div>
         </div>
