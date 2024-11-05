@@ -13,7 +13,7 @@ var dashboard = require("./dashboard.js")
 
 app.use(cors());
 
-setInterval(getblyncmetrics, 1000 * 60);
+//setInterval(getblyncmetrics, 1000 * 60);
 
 const kafkaProxy = createProxyMiddleware({
   target: "http://localhost:8083/connectors/", // target host with the same base path
@@ -123,7 +123,7 @@ app.post("/blyncsync/addreplication", async function (req, res) {
   let destination = req.body.destination;
   let topics = req.body.destinationConfig.config.topics;
 
-  const resSource = await axios({
+  /* const resSource = await axios({
     method: "POST",
     data: sourceConfig,
     withCredentials: true,
@@ -140,7 +140,7 @@ app.post("/blyncsync/addreplication", async function (req, res) {
   });
 
   console.log("Destination connector added");
-
+*/
   db.run(
     `INSERT INTO replications(connectionName, source, destination, sourceConfig, 
     destinationConfig, isActive, createdDate, createdBy, topics) VALUES(?, ?, ?, ?, ?, ?, datetime('now','localtime'), ?, ?)`,
