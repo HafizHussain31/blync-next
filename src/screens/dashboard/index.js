@@ -14,7 +14,8 @@ const Dashboard = () => {
       {
         data: [1, 2, 1, 4, 3, 6],
       }
-    ]
+    ],
+    credits: false
   };
 
 
@@ -98,7 +99,6 @@ const Dashboard = () => {
 
         </div> */}
         <div className="row">
-        <Card>
           <div className="col-6">
             <HighchartsReact
               highcharts={Highcharts} options={{
@@ -108,7 +108,6 @@ const Dashboard = () => {
                 }
               }} />
           </div>
-          </Card>
           <div className="col-6">
             <HighchartsReact
               highcharts={Highcharts} options={{
