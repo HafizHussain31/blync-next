@@ -5,8 +5,12 @@ import HighchartsReact from 'highcharts-react-official';
 import { Card } from "@mui/material";
 import ExportedData from '../../assets';
 import incomingData from '../../sampleData/incomingmessages.json';
+import { useDispatch } from "react-redux";
+import { getDashboardData } from "../../redux/reducers/dashboardSlice";
 
 const Dashboard = () => {
+
+  const dispatch = useDispatch();
 
   const options = {
     title: {
@@ -32,6 +36,7 @@ const Dashboard = () => {
 
 
   useEffect(() => {
+    dispatch(getDashboardData())
     getChartData();
   }, []);
 

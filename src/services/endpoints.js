@@ -1,5 +1,6 @@
 const Endpoints = {
-    
+    GET_REPLICATIONS: '/getreplications',
+    GET_DASHBOARD: '/getdashboarddata',
 }
 
 

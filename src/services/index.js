@@ -45,7 +45,7 @@ const request = async ({ url, method, data, isLoader = true, headers }) => {
     if(isLoader){
       showLoader(false);
     }
-    return response;
+    return response.data;
   } catch (error) {
     if(isLoader){
       showLoader(false);

@@ -10,7 +10,7 @@ export const getRememberMeStatus = () => {
 
 }
 export const getTokenFromStore = () => {
-
+    return null;
 }
 export const getUserDataFromStore = () => {
 

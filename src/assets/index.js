@@ -13,6 +13,8 @@ const Images = {
     social: require("./icons/social.png"),
     time: require("./icons/time.png"),
     twitter: require("./icons/twitter.png"),
+    edit: require("./icons/edit.png"),
+    delete: require("./icons/delete.png"),
   };
   
   const Lottie = {
