@@ -26,6 +26,21 @@ export const getReplicationData = () => async (dispatch) => {
     })
 }
 
+export const getSourceTables = (data) => {
+    return new Promise((resolve, _reject) => {
+        request({
+            url: Exported.Endpoints.GET_SOURCE_TABLES,
+            method: Exported.APIMethods.POST,
+            data
+        }).then(res =>{
+            resolve(res)
+        }).catch(err=> {
+            resolve([])
+        })
+    })
+
+}
+
 export const { saveData } = replicationSlice.actions;
 
 export default replicationSlice.reducer;

@@ -52,6 +52,7 @@ const InputField = ({
           defaultValue={value ?? ''}
           {...register}
           disabled={disabled}
+          onChange={onChange ?? null}
           autoComplete="new-password"
           className={`${type == 'checkbox'
               ? "custom-checkbox"

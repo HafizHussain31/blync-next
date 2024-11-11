@@ -9,6 +9,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import CustomController from "../../components/customController";
 import { dropDownValidation } from "../../utils";
+import { Checkbox } from "antd";
+import { getSourceTables } from "../../redux/reducers/replicationSlice";
 
 const AddReplication = () => {
   let navigate = useNavigate();
@@ -25,6 +27,8 @@ const AddReplication = () => {
 
   const [badgeImageData, setBadgeImageData] = useState(null);
 
+  const [sourceTables, setSourceTables] = useState([])
+
   const {
     handleSubmit,
     register,
@@ -32,7 +36,9 @@ const AddReplication = () => {
     control,
     setValue,
     getValues,
-    watch
+    trigger,
+    watch,
+    setError
   } = useForm({ mode: "onBlur" });
 
   const onSubmit = () => {
@@ -42,6 +48,91 @@ const AddReplication = () => {
   const headerMessage = watch("headerMessage");
   const achievement = watch("achievement");
   const category = watch("category");
+
+
+  const onChangeValue = (value, index, key) => {
+    let item = [...sourceTables];
+
+    item[index][key] = value;
+
+    setSourceTables(item);
+  }
+
+  const onClickShowSourceTable = async () => {
+    const sourceDatabaseType = getValues('sourceDatabaseType');
+    const sHostName = getValues('sHostName');
+    const sUserName = getValues('sUserName');
+    const sPortNumber = getValues('sPortNumber');
+    const sPassword = getValues('sPassword');
+    const sDatabaseName = getValues('sDatabaseName');
+
+    // if(!sourceDatabaseType){
+    //   await trigger('sourceDatabaseType')
+    //   return
+    // }
+
+    if (!sHostName) {
+      await trigger('sHostName')
+      return
+    }
+
+    if (!sPortNumber) {
+      await trigger('sPortNumber')
+      return
+    }
+
+    if (!sUserName) {
+      await trigger('sUserName')
+      return
+    }
+
+    if (!sPassword) {
+      await trigger('sPassword')
+      return
+    }
+
+    if (!sDatabaseName) {
+      await trigger('sDatabaseName')
+      return
+    };
+
+    let request = {
+      "username": sUserName,
+      "password": sPassword,
+      "database": sDatabaseName,
+      "hostname": sHostName
+    }
+
+    setSourceTables([])
+
+
+    getSourceTables(request).then(res => {
+      setSourceTables(res);
+
+      let finalArray = []
+      if (res && Array.isArray(res)) {
+        let item = [...res];
+
+
+        for (let i = 0; i < item.length; i++) {
+          const element = item[i];
+          let object = {
+            isChecked: false,
+            value: element,
+            changeKey: '',
+            documentId: ''
+          }
+
+          finalArray.push(object)
+        }
+      }
+
+      setSourceTables(finalArray)
+    }).catch(_err => {
+
+    })
+
+  }
 
   return (
     <>
@@ -165,7 +256,7 @@ const AddReplication = () => {
                 <label className="login-input-label">Host Name</label>
                 <InputField
                   type={"text"}
-                   placeholder="Eg: X.X.X.X"
+                  placeholder="Eg: X.X.X.X"
                   register={register("dHostName", {
                     required: "Host Name is required",
                   })}
@@ -183,7 +274,7 @@ const AddReplication = () => {
                   register={register("sPortNumber", {
                     required: "Port Number is required",
                   })}
-                  
+
                   error={errors.sPortNumber}
                   messages={errors}
                 />
@@ -286,11 +377,46 @@ const AddReplication = () => {
               </div>
             </div>
             <div className="row mt-2">
-              <div className="col-6 center-button">
-                <PrimaryButton
-                  type="button"
-                  label={'Show Tables'}
-                  onClick={() => { }} />
+              <div className="col-6">
+                <div className="center-button">
+                  <PrimaryButton
+                    type="button"
+                    label={'Show Tables'}
+                    onClick={() => onClickShowSourceTable()} />
+                </div>
+
+                <div className="mt-5">
+                  {
+                    sourceTables.map((it, index) => {
+                      let {
+                        isChecked,
+                        value,
+                        changeKey,
+                        documentId
+                      } = it
+                      return (
+                        <div className="d-flex align-items-center gap-2 mb-4">
+                          <Checkbox
+                            value={isChecked}
+                            onChange={(r) => onChangeValue(r.target.checked, index, "isChecked")
+                            } />
+                          <label className="ms-1 label-text">{value}</label>
+                          {
+                            isChecked && <div className="d-flex align-items-center gap-2">
+                              <InputField 
+                                value={changeKey}
+                                onChange={(r)=> onChangeValue(r.target.value, index, "changeKey")
+                                }/>
+                              <InputField 
+                              value={documentId}
+                              onChange={(r)=> onChangeValue(r.target.value, index, "documentId")}/>
+                            </div>
+                          }
+                        </div>
+                      )
+                    })
+                  }
+                </div>
               </div>
               <div className="col-6 center-button">
                 <PrimaryButton
