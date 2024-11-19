@@ -29,6 +29,37 @@ const AddReplication = () => {
 
   const [sourceTables, setSourceTables] = useState([])
 
+  const [sourceDatabaseTypeData, setSourceDatabaseTypeData] = useState([
+    {
+      label: 'Sql Server',
+      value: 'Sql Server',
+    },
+    {
+      label: 'Postgre Sql',
+      value: 'Postgre Sql',
+    },
+    {
+      label: 'Couchbase',
+      value: 'Couchbase',
+    }
+  ])
+
+
+  const [sourceDatabaseType,setSourceDatabaseType] = useState(null)
+
+  const [destDatabaseTypeData, setDestDatabaseTypeData] = useState([
+    {
+      label: 'Couchbase',
+      value: 'Couchbase',
+    },
+    {
+      label: 'Rest API',
+      value: 'Rest API',
+    }
+  ]);
+
+  const [destDatabaseType, setDestDatabaseType] = useState(null)
+
   const {
     handleSubmit,
     register,
@@ -190,18 +221,18 @@ const AddReplication = () => {
                 <CustomController
                   name="sourceDatabaseType"
                   control={control}
-                  data={null}
+                  data={sourceDatabaseType}
                   error={errors.sourceDatabaseType}
                   register={register("sourceDatabaseType", dropDownValidation('Source Database Type'))}
                   render={({ field: { onChange } }) => {
                     return (
                       <DropDownComponent
-                        options={[]}
+                        options={sourceDatabaseTypeData}
                         borderGreen
                         error={errors.sourceDatabaseType}
-                        value={null}
+                        value={sourceDatabaseType}
                         onChange={(e) => {
-                          setSelectedCatgory(e);
+                          setSourceDatabaseType(e);
                           onChange(e?.value);
                         }}
                         placeholder="Select a Database Type"
@@ -221,11 +252,12 @@ const AddReplication = () => {
                   render={({ field: { onChange } }) => {
                     return (
                       <DropDownComponent
-                        options={[]}
+                        options={destDatabaseTypeData}
                         borderGreen
                         error={errors.destDatabaseType}
-                        value={null}
+                        value={destDatabaseType}
                         onChange={(e) => {
+                          setDestDatabaseType(e)
                           onChange(e?.value);
                         }}
                         placeholder="Select a Database Type"
