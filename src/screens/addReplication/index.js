@@ -10,8 +10,9 @@ import { useForm } from "react-hook-form";
 import CustomController from "../../components/customController";
 import { dropDownValidation } from "../../utils";
 import { Checkbox } from "antd";
-import { getSourceTables } from "../../redux/reducers/replicationSlice";
+import { addReplication, getSourceTables } from "../../redux/reducers/replicationSlice";
 import { ErrorToast } from "../../components/errorToast";
+import { Toast } from "../../components/toast";
 
 const AddReplication = () => {
   let navigate = useNavigate();
@@ -112,7 +113,7 @@ const AddReplication = () => {
     let topics = '';
 
     let topicsToCollection = '';
-    
+
     let topicsToDocumentId = '';
 
     for (let i = 0; i < checkedCountAndData.length; i++) {
@@ -137,15 +138,14 @@ const AddReplication = () => {
       topics += `${replicationName}.dbo.${value}`;
 
       topicsToCollection += `${replicationName}.dbo.${value}=${bucketName}.${dDatabaseName}.${changeKey}`;
-      
+
       topicsToDocumentId += `${replicationName}.dbo.${value}=/after/${documentId}`;
 
-      if(i != checkedCountAndData.length - 1){
+      if (i != checkedCountAndData.length - 1) {
         topics += ',';
         topicsToCollection += ',';
         topicsToDocumentId += ',';
       }
-
     }
 
 
@@ -193,7 +193,12 @@ const AddReplication = () => {
       "username": "Hafiz"
     }
 
-    console.log(JSON.stringify(request, null, 4))
+    addReplication(request).then(res => {
+      Toast({ message: "Replication added successfully" });
+      navigate(-1);
+    }).catch(err => {
+      ErrorToast("Something went wrong.");
+    })
 
   }
 
