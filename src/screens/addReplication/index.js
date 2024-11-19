@@ -11,6 +11,7 @@ import CustomController from "../../components/customController";
 import { dropDownValidation } from "../../utils";
 import { Checkbox } from "antd";
 import { getSourceTables } from "../../redux/reducers/replicationSlice";
+import { ErrorToast } from "../../components/errorToast";
 
 const AddReplication = () => {
   let navigate = useNavigate();
@@ -32,29 +33,29 @@ const AddReplication = () => {
   const [sourceDatabaseTypeData, setSourceDatabaseTypeData] = useState([
     {
       label: 'Sql Server',
-      value: 'Sql Server',
+      value: 'sql-server',
     },
     {
       label: 'Postgre Sql',
-      value: 'Postgre Sql',
+      value: 'postgre-sql',
     },
     {
       label: 'Couchbase',
-      value: 'Couchbase',
+      value: 'couchbase',
     }
   ])
 
 
-  const [sourceDatabaseType,setSourceDatabaseType] = useState(null)
+  const [sourceDatabaseType, setSourceDatabaseType] = useState(null)
 
   const [destDatabaseTypeData, setDestDatabaseTypeData] = useState([
     {
       label: 'Couchbase',
-      value: 'Couchbase',
+      value: 'couchbase',
     },
     {
       label: 'Rest API',
-      value: 'Rest API',
+      value: 'rest-api',
     }
   ]);
 
@@ -72,14 +73,129 @@ const AddReplication = () => {
     setError
   } = useForm({ mode: "onBlur" });
 
-  const onSubmit = () => {
+  const onSubmit = (data) => {
+    console.log(data);
+
+    let {
+      replicationName,
+      bucketName,
+      dDatabaseName,
+      dHostName,
+      dPassword,
+      dUserName,
+      sDatabaseName,
+      sHostName,
+      sPassword,
+      sPortNumber,
+      sUserName,
+    } = data;
+
+    if (sourceTables.length == 0) {
+      ErrorToast("Please execute show tables on the source")
+      return
+    }
+
+    let checkedCountAndData = sourceTables.filter(it => it.isChecked);
+
+    if (checkedCountAndData.length == 0) {
+      ErrorToast("Please select atleast one table from source")
+      return
+    }
+
+
+    let sourceDbTypeLabel = sourceDatabaseType?.label;
+    let sourceDbTypeValue = sourceDatabaseType?.value;
+
+    let destDbTypeLabel = destDatabaseType?.label;
+    let destDbTypeValue = destDatabaseType?.value;
+
+    let topics = '';
+
+    let topicsToCollection = '';
+    
+    let topicsToDocumentId = '';
+
+    for (let i = 0; i < checkedCountAndData.length; i++) {
+      const element = checkedCountAndData[i];
+
+      let {
+        changeKey,
+        documentId,
+        value
+      } = element;
+
+      if (changeKey == '') {
+        ErrorToast(`Please enter the change key for ${value}`);
+        return
+      }
+
+      if (documentId == '') {
+        ErrorToast(`Please enter the document id for ${value}`);
+        return
+      }
+
+      topics += `${replicationName}.dbo.${value}`;
+
+      topicsToCollection += `${replicationName}.dbo.${value}=${bucketName}.${dDatabaseName}.${changeKey}`;
+      
+      topicsToDocumentId += `${replicationName}.dbo.${value}=/after/${documentId}`;
+
+      if(i != checkedCountAndData.length - 1){
+        topics += ',';
+        topicsToCollection += ',';
+        topicsToDocumentId += ',';
+      }
+
+    }
+
+
+    let request = {
+      "source": sourceDbTypeLabel,
+      "destination": destDbTypeLabel,
+      "sourceConfig": {
+        "name": `${replicationName}-${sourceDbTypeValue}`,
+        "config": {
+          "connector.class": "io.debezium.connector.sqlserver.SqlServerConnector",
+          "tasks.max": "1",
+          "database.server.name": replicationName,
+          "database.hostname": sHostName,
+          "database.port": `${sPortNumber}`,
+          "database.user": sUserName,
+          "database.password": sPassword,
+          "database.dbname": sDatabaseName,
+          "database.history.kafka.bootstrap.servers": "localhost:9092",
+          "database.history.kafka.topic": `${replicationName}.streamtopic`
+        }
+      },
+      "destinationConfig": {
+        "name": `${replicationName}-${destDbTypeValue}`,
+        "config": {
+          "name": `${replicationName}-${destDbTypeValue}`,
+          "connector.class": "com.couchbase.connect.kafka.CouchbaseSinkConnector",
+          "tasks.max": "2",
+          "topics": topics,
+          "couchbase.seed.nodes": dHostName,
+          "couchbase.bootstrap.timeout": "10s",
+          "couchbase.bucket": bucketName,
+          "couchbase.username": dUserName,
+          "couchbase.password": dPassword,
+          "couchbase.topic.to.collection": topicsToCollection,
+          "couchbase.topic.to.document.id": topicsToDocumentId,
+          "couchbase.document.id": "/after/id",
+          "couchbase.persist.to": "NONE",
+          "couchbase.replicate.to": "NONE",
+          "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+          "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+          "value.converter.schemas.enable": "false"
+        }
+      },
+      "connectionname": replicationName,
+      "username": "Hafiz"
+    }
+
+    console.log(JSON.stringify(request, null, 4))
 
   }
-  const bodyMessage = watch("bodyMessage");
-  const headerMessage = watch("headerMessage");
-  const achievement = watch("achievement");
-  const category = watch("category");
-
 
   const onChangeValue = (value, index, key) => {
     let item = [...sourceTables];
@@ -396,7 +512,7 @@ const AddReplication = () => {
                 />
               </div>
               <div className="col-6">
-                <label className="login-input-label">Database Name</label>
+                <label className="login-input-label">Scope Name</label>
                 <InputField
                   type={"text"}
                   placeholder="Eg: xxxxx"
@@ -435,13 +551,13 @@ const AddReplication = () => {
                           <label className="ms-1 label-text">{value}</label>
                           {
                             isChecked && <div className="d-flex align-items-center gap-2">
-                              <InputField 
+                              <InputField
                                 value={changeKey}
-                                onChange={(r)=> onChangeValue(r.target.value, index, "changeKey")
-                                }/>
-                              <InputField 
-                              value={documentId}
-                              onChange={(r)=> onChangeValue(r.target.value, index, "documentId")}/>
+                                onChange={(r) => onChangeValue(r.target.value, index, "changeKey")
+                                } />
+                              <InputField
+                                value={documentId}
+                                onChange={(r) => onChangeValue(r.target.value, index, "documentId")} />
                             </div>
                           }
                         </div>
