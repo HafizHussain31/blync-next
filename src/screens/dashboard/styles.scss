@@ -32,7 +32,12 @@
 .card-container-dashboard{
   border-radius: 15px !important;
   border: 1px solid #e8e6e6;
+  text-align: center;
   padding-top: 25px;
+
+  label {
+    font-size: 20px;
+  }
 }
 
 .tr-amt{

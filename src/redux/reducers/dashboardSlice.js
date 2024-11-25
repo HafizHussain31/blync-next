@@ -14,14 +14,17 @@ export const dashboardSlice = createSlice({
     }
 });
 
-export const getDashboardData = () => async (dispatch) => {
-    request({
-        url: Exported.Endpoints.GET_DASHBOARD,
-        method: Exported.APIMethods.POST
-    }).then(res => {
-        console.log(res);
-        dispatch(saveData(res))
-    }).catch(err => {
+export const getDashboardData = (data) => {
+    return new Promise((resolve, reject) => {
+        request({
+            url: Exported.Endpoints.GET_DASHBOARD,
+            method: Exported.APIMethods.POST,
+            data: data
+        }).then(res => {
+            resolve(res)
+        }).catch(err => {
+            reject([])
+        })
     })
 }
 
