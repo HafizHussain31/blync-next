@@ -27,11 +27,14 @@ const Dashboard = () => {
     credits: false
   };
 
-  const [incomingChartData, setIncomingChartData] = useState([]);
+  const [incomingChartData, setIncomingChartData] = useState({});
+  const [hasIncomingChartData, setHasIncomingChartData] = useState(false);
 
   const [outgoingChartData, setOutgoingChartData] = useState([]);
+  const [hasOutgoingChartData, setHasOutgoingChartData] = useState(false);
 
   const [lagChartData, setLagChartData] = useState([]);
+  const [hasLagChartData, setHasLagChartData] = useState(false);
 
   const [cpuChartData, setCpuChartData] = useState();
 
@@ -100,8 +103,6 @@ const Dashboard = () => {
           })
           .filter(({ x, y }) => x !== null && y !== null && x !== undefined && y !== undefined);
 
-        console.log(incoming, 'incoming');
-
         let outgoingData = data.slice(1)
           .map((a, i) => {
             const { currentoffset, createdDate } = a;
@@ -120,6 +121,9 @@ const Dashboard = () => {
           })
           .filter(({ x, y }) => x !== null && y !== null && x !== undefined && y !== undefined);
 
+          setHasIncomingChartData(incoming.length > 0);
+          setHasLagChartData(lagData.length > 0)
+          setHasOutgoingChartData(outgoingData.length > 0)
 
         let incomingChart = {
           chart: {
@@ -421,20 +425,20 @@ const Dashboard = () => {
         <div className="row">
           <div className="col-6">
             <Card className="card-container-dashboard">
-              {(incomingChartData && incomingChartData.length > 0) ? <HighchartsReact
+              {(hasIncomingChartData) ? <HighchartsReact
                 highcharts={Highcharts} options={incomingChartData} /> : <label className="mb-4">No Data available</label>}
             </Card>
           </div>
           <div className="col-6">
             <Card className="card-container-dashboard">
-              {(outgoingChartData && outgoingChartData.length > 0) ? <HighchartsReact
+              {(hasOutgoingChartData) ? <HighchartsReact
                 highcharts={Highcharts} options={outgoingChartData} /> : <label className="mb-4">No Data available</label>}
             </Card>
           </div>
           <div className="row mt-5">
             <div className="col-6">
               <Card className="card-container-dashboard">
-                {(lagChartData && lagChartData.length > 0) ? <HighchartsReact
+                {(hasLagChartData) ? <HighchartsReact
                   highcharts={Highcharts} options={lagChartData} /> : <label className="mb-4">No Data available</label>}
               </Card>
             </div>
