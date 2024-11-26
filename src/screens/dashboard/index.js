@@ -98,7 +98,7 @@ const Dashboard = () => {
           .map((a, i) => {
             const { totaloffset, createdDate } = a;
             const x = new Date(createdDate).getTime();
-            const y = totaloffset - (incomingData[i]?.totaloffset || 0);
+            const y = totaloffset - (data[i]?.totaloffset || 0);
             return { x, y };
           })
           .filter(({ x, y }) => x !== null && y !== null && x !== undefined && y !== undefined);
@@ -107,7 +107,7 @@ const Dashboard = () => {
           .map((a, i) => {
             const { currentoffset, createdDate } = a;
             const x = createdDate ? new Date(createdDate).getTime() : null;
-            const y = currentoffset != null ? currentoffset - (incomingData[i]?.currentoffset || 0) : null;
+            const y = currentoffset != null ? currentoffset - (data[i]?.currentoffset || 0) : null;
             return { x, y };
           })
           .filter(({ x, y }) => x !== null && y !== null && x !== undefined && y !== undefined);
@@ -151,7 +151,7 @@ const Dashboard = () => {
             {
               // `type: column` is required for type-checking this options as a column series
               type: "line",
-              data: incomingData,
+              data: incoming,
             },
           ],
           xAxis: [
