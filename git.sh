@@ -8,4 +8,4 @@ git add .
 
 git commit -m "$gitComment"
 
-git push https://codekanva@github.com/HafizHussain31/blync-next.git react-code
+git push https://codekanva@github.com/HafizHussain31/blync-next.git multiple-table-map
