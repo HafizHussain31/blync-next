@@ -56,6 +56,21 @@ export const addReplication = (data) => {
 
 }
 
+export const getAllCollections = () => {
+    return new Promise((resolve, _reject) => {
+        request({
+            url: Exported.Endpoints.COLLECTION_API,
+            method: Exported.APIMethods.POST,
+            data: {}
+        }).then(res =>{
+            resolve(res)
+        }).catch(err=> {
+            resolve(false)
+        })
+    })
+
+}
+
 export const { saveData } = replicationSlice.actions;
 
 export default replicationSlice.reducer;

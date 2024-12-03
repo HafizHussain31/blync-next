@@ -3,6 +3,7 @@ const Endpoints = {
     GET_DASHBOARD: '/getdashboarddata',
     GET_SOURCE_TABLES: '/getmssqltables',
     ADD_REPLICATION: '/addreplication',
+    COLLECTION_API: '/getcbcollections'
 }
 
 

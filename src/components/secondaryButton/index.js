@@ -1,25 +1,26 @@
+
 import React from "react";
 import "./styles.scss";
 
-const PrimaryButton = ({
+const SecondaryButton = ({
   label,
   onClick,
   disable,
-  type="submit",
-  className = '',
+  icon,
+  className = ''
 }) => {
   return (
     <div>
       <button
-        className={`login-btn ${className}`}
-        type={type}
+        className={`secondary-btn ${className}`}
         onClick={onClick}
         disabled={disable}
       >
+        {icon != null && <img src={icon} className="left-icon"/>}
         <span className="btn-label">{label}</span>
       </button>
     </div>
   );
 };
 
-export default PrimaryButton;
+export default SecondaryButton;

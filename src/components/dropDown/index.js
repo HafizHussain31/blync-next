@@ -29,7 +29,7 @@ const DropDownComponent = ({
 }) => {
   const customStyles = {
     noOptionsMessage: () => ({
-      fontSize: "14px",
+      fontSize: "12px",
       padding: "10px",
       color: "#009BEE",
       fontFamily: "Open-Sans"
@@ -40,7 +40,7 @@ const DropDownComponent = ({
       color: "#009BEE",
       cursor: "pointer",
       fontFamily: "Open-Sans",
-      fontSize: "14px",
+      fontSize: "12px",
       borderBottom: "1px solid #dedede",
       padding: "10px 20px",
 
@@ -48,7 +48,7 @@ const DropDownComponent = ({
     control: (provided, state) => ({
       ...provided,
       border: error ? "1px solid red" : disableBorder ? "0px solid #009BEE" : "1px solid #009BEE",
-      fontSize: "14px",
+      fontSize: "12px",
       fontFamily: "Open-Sans",
       padding: leftIcon ? "0 20px" : hidePlaceholder ? "0" : "0 5px",
       height: "40px",

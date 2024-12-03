@@ -10,9 +10,13 @@ import { useForm } from "react-hook-form";
 import CustomController from "../../components/customController";
 import { dropDownValidation } from "../../utils";
 import { Checkbox } from "antd";
-import { addReplication, getSourceTables } from "../../redux/reducers/replicationSlice";
+import { addReplication, getAllCollections, getSourceTables } from "../../redux/reducers/replicationSlice";
 import { ErrorToast } from "../../components/errorToast";
 import { Toast } from "../../components/toast";
+import MultiSelect from "../../components/multiSelect";
+import ModalComponent from "../../components/modal";
+import SecondaryButton from "../../components/secondaryButton";
+import { JSONTree } from 'react-json-tree';
 
 const AddReplication = () => {
   let navigate = useNavigate();
@@ -25,11 +29,30 @@ const AddReplication = () => {
 
   const [selectedCategory, setSelectedCatgory] = useState("");
 
-  const [badgeImage, setBadgeImage] = useState(null);
+  const [isOpenRightMenu, setIsOpenRightMenu] = useState(false);
+
+  const [openTableModal, setOpenTableModal] = useState(false);
 
   const [badgeImageData, setBadgeImageData] = useState(null);
 
+  const [selectedJsonData, setSelectedJsonData] = useState();
+
   const [sourceTables, setSourceTables] = useState([])
+  const [collectionData, setCollectionData] = useState([])
+  
+  const [documentIdData, setDocumentIdData] = useState([]);
+
+  const theme = {
+    scheme: "monokai",
+    base00: "#272822",
+    base08: "#f92672",
+    base0B: "#a6e22e",
+    base0A: "#f4bf75",
+    base0D: "#66d9ef",
+    base0E: "#ae81ff",
+    base0C: "#a1efe4",
+    base05: "#f8f8f2",
+  };
 
   const [sourceDatabaseTypeData, setSourceDatabaseTypeData] = useState([
     {
@@ -44,8 +67,13 @@ const AddReplication = () => {
       label: 'Couchbase',
       value: 'couchbase',
     }
-  ])
+  ]);
 
+  const [mapDataSource, setMapDataSource] = useState([{
+    tables: [],
+    collectionName: null,
+    documentId: null
+  }])
 
   const [sourceDatabaseType, setSourceDatabaseType] = useState(null)
 
@@ -259,35 +287,174 @@ const AddReplication = () => {
 
 
     getSourceTables(request).then(res => {
-      setSourceTables(res);
-
       let finalArray = []
       if (res && Array.isArray(res)) {
         let item = [...res];
 
-
         for (let i = 0; i < item.length; i++) {
-          const element = item[i];
+          const {
+            tablename,
+            columns
+          } = item[i];
           let object = {
-            isChecked: false,
-            value: element,
-            changeKey: '',
-            documentId: ''
+            value: tablename,
+            label: tablename,
+            columns
           }
 
           finalArray.push(object)
         }
       }
 
-      setSourceTables(finalArray)
+      setSourceTables(finalArray);
+      collectionListApi()
     }).catch(_err => {
 
     })
 
   }
 
+  const collectionListApi = () => {
+    getAllCollections().then(res => {
+      let finalArray = [];
+      if (res && Array.isArray(res)) {
+        let item = [...res];
+
+        for (let i = 0; i < item.length; i++) {
+          const element = item[i];
+          let object = {
+            value: element,
+            label: element
+          }
+
+          finalArray.push(object)
+        }
+      }
+
+      setCollectionData(finalArray)
+      setIsOpenRightMenu(true)
+
+    }).catch(_err => {})
+  }
+
+  const closeMenu = () => {
+    setIsOpenRightMenu(false)
+  }
+
+  const onChangeMapData = (value, index, key) => {
+    let item = [...mapDataSource];
+
+    item[index][key] = value;
+
+    if (key == 'tables') {
+      if(item[index]?.tables?.length > 1){
+        item[index]["documentId"] = null;
+        setDocumentIdData([]);
+      }else{
+        let columns = value && Array.isArray(value) && value.length > 0 && value[0].columns && Array.isArray(value[0].columns) && value[0].columns?.length > 0 ? value[0].columns : [];
+  
+        let item = columns.map(it => {
+          return {
+            label: it,
+            value: it
+          }
+        });
+  
+        console.log(item, 'item');
+        setDocumentIdData([...item]);
+      }
+     
+    }
+
+    setMapDataSource(item);
+  }
+
+  const onClickEyeIcon = (obj) => {
+    let {
+      tables,
+      documentId,
+      collectionName
+    } = obj
+
+    if (tables.length == 0) {
+      ErrorToast("Please select atleast on table")
+      return
+    }
+
+    if (collectionName == null) {
+      ErrorToast("Please select collection name")
+      return
+    }
+
+    if (tables.length == 1 && documentId == null) {
+      ErrorToast("Please select document id")
+      return
+    }
+
+    if (tables.length > 1) {
+      let json = {}
+      for (let i = 0; i < tables.length; i++) {
+        const element = tables[i];
+        let columns = element && element.columns && Array.isArray(element.columns) && element.columns?.length > 0 ? element.columns : [];
+
+        let columnsJson = {}
+
+        for (let i = 0; i < columns.length; i++) {
+          const element = columns[i];
+          columnsJson = {
+            ...columnsJson,
+            [element]: 'value'
+          }
+        }
+        json = {
+          ...json,
+          [element.value]: {
+            ...columnsJson
+          }
+        }
+        setSelectedJsonData(json)
+      }
+      setSelectedJsonData(json)
+    } else {
+      let columns = tables && Array.isArray(tables) && tables.length > 0 && tables[0].columns && Array.isArray(tables[0].columns) && tables[0].columns?.length > 0 ? tables[0].columns : [];
+      let json = {}
+      for (let i = 0; i < columns.length; i++) {
+        const element = columns[i];
+        json = {
+          ...json,
+          [element]: 'value'
+        }
+      }
+      setSelectedJsonData(json)
+    }
+
+  }
+
+  const onClickDeleteIcon = (index) => {
+    let item = [...mapDataSource]
+
+    item.splice(index, 1)
+
+    setMapDataSource(item)
+  }
+
+  const onClickAddNew = () => {
+    let item = [...mapDataSource]
+
+    item.push({
+      tables: [],
+      collectionName: null,
+      documentId: null
+    });
+
+    setMapDataSource(item)
+  }
+
+  const shouldExpandNodeInitially = () => true;
+
   return (
     <>
+      {isOpenRightMenu && <div className="backdrop" onClick={closeMenu}></div>}
       <div className="add-replication-container">
         <div className="back-to-user-container">
           <img
@@ -538,7 +705,7 @@ const AddReplication = () => {
                     onClick={() => onClickShowSourceTable()} />
                 </div>
 
-                <div className="mt-5">
+                {/* <div className="mt-5">
                   {
                     sourceTables.map((it, index) => {
                       let {
@@ -569,7 +736,7 @@ const AddReplication = () => {
                       )
                     })
                   }
-                </div>
+                </div> */}
               </div>
               <div className="col-6 center-button">
                 <PrimaryButton
@@ -586,6 +753,100 @@ const AddReplication = () => {
           </form>
         </div>
       </div>
+
+      <div className={`right-side-menu ${isOpenRightMenu ? "open" : ""}`}>
+        <h2 className="modal-title mb-5">Tables:</h2>
+        {/* {
+          sourceTables.map(it => {
+            return (
+              <div>
+                <p>{it}</p>
+                </div>
+            )
+          })
+        } */}
+
+        {
+          mapDataSource.map((it, index) => {
+            let {
+              tables,
+              documentId,
+              collectionName
+            } = it
+            return (
+              <div className="d-flex align-items-center mb-4 row">
+                <div className="col-4">
+                  <MultiSelect
+                    options={sourceTables}
+                    value={tables}
+                    onChange={(e) => {
+                      onChangeMapData(e, index, "tables")
+                    }}
+                  />
+                </div>
+                <div className="col-3">
+                  <DropDownComponent
+                    options={collectionData}
+                    borderGreen
+                    value={collectionName}
+                    onChange={(e) => {
+                      onChangeMapData(e, index, "collectionName")
+                    }}
+                    placeholder="Collection Name"
+                  />
+                </div>
+                <div className="col-3">
+                  <DropDownComponent
+                    options={documentIdData}
+                    borderGreen
+                    disabled={tables.length > 1}
+                    value={documentId}
+                    onChange={(e) => {
+                      onChangeMapData(e, index, "documentId")
+                    }}
+                    placeholder={tables.length <= 1 ? "Document id" : "Auto Generated GUID"}
+                  />
+                </div>
+
+                <div className="col-1">
+                  <div className="row gap-2">
+                    <div className="col-1"  onClick={() => onClickEyeIcon(it)}><img className="eye-icon" src={assets.Icons.eye} /></div>
+                    {mapDataSource.length > 1 && <div className="col-1"  onClick={() => onClickDeleteIcon(index)}><img className="eye-icon" src={assets.Icons.close} /></div>}
+                  </div>
+                </div>
+
+              </div>
+            )
+          })
+        }
+        <div className="row">
+          <div className="col-3">
+            <SecondaryButton label={'Add New'} icon={assets.Icons.edit} onClick={onClickAddNew} />
+          </div>
+        </div>
+        <div className="row align-items-center justify-content-center mt-5">
+          <div className="col-3">
+            <SecondaryButton label={'Cancel'} className="secondary-button-add" />
+          </div>
+          <div className="col-3">
+            <PrimaryButton label={'Map'} className="secondary-button-add" />
+          </div>
+        </div>
+
+
+      </div>
+
+      <ModalComponent show={selectedJsonData != null} setModal={(e) => {
+        if (!e) {
+          setSelectedJsonData(null)
+        }
+      }}>
+        <img src={assets.Icons.close} className="close-icon" onClick={() => setSelectedJsonData(null)} />
+        {/* <pre className="json-data">{selectedJsonData ? JSON.stringify(selectedJsonData, null, 4) : ''}</pre> */}
+        <JSONTree data={selectedJsonData} theme={theme} invertTheme={false}  shouldExpandNodeInitially={shouldExpandNodeInitially} />
+
+      </ModalComponent>
+
     </>
   );
 };

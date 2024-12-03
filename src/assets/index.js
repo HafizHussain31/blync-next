@@ -15,6 +15,7 @@ const Images = {
     twitter: require("./icons/twitter.png"),
     edit: require("./icons/edit.png"),
     delete: require("./icons/delete.png"),
+    close: require("./icons/close.png"),
   };
   
   const Lottie = {

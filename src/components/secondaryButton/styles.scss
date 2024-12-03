@@ -1,0 +1,26 @@
+@import "../../theme/variables.scss";
+@import "../../theme/fonts.scss";
+
+
+.secondary-btn {
+  height: 40px;
+  border: 1px solid $primary-color;
+  border-radius: 4px;
+  background-color: transparent;
+  margin-right: 10px;
+  align-items: center;
+  cursor: pointer;
+
+  .btn-label {
+    font-family: "Open-Sans";
+    font-weight: 600;
+    font-size: 14px;
+    color: $primary-color;
+  }
+}
+
+.left-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}

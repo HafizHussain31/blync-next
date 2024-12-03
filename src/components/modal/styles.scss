@@ -1,0 +1,41 @@
+.normalModal {
+  .modal-dialog {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    z-index: 9999
+    // width: 100%;
+  }
+  //   .modal-content {
+  //     padding: 10px;
+  //   }
+
+  .modal-body {
+    // padding-top: 0px;
+    padding: 0 !important;
+    background-color: rgb(39, 40, 34);
+
+  }
+}
+
+.width60 {
+  .modal-content {
+    width: 60%;
+  }
+}
+.width75 {
+  .modal-content {
+    width: 75%;
+  }
+}
+
+.width30 {
+  .modal-content {
+    width: 30%;
+  }
+}
+.width100 {
+  .modal-content {
+    width: 100%;
+  }
+}

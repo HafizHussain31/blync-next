@@ -52,3 +52,77 @@
   text-transform: capitalize;
   width: 150px;
 }
+
+.right-side-menu {
+  position: fixed;
+  top: 0;
+  right: -800px; /* Start off-screen */
+  width: 800px;
+  height: 100%;
+  background-color: #ffffff;
+  padding: 20px;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  transition: right 0.3s ease; /* Smooth transition */
+  z-index: 150;
+}
+.right-side-menu.open {
+  right: 0; /* Slide into view */
+}
+
+/* Menu items */
+.right-side-menu ul {
+  list-style: none;
+  padding: 0;
+}
+
+.right-side-menu li {
+  margin: 20px 0;
+}
+
+.right-side-menu a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  z-index: 100; /* Below the menu but above the main content */
+}
+
+.modal-title {
+  font-family: 'Open-Sans';
+  text-decoration: underline;
+}
+
+.eye-icon{
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.close-icon{
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 999;
+}
+
+.json-data {
+  font-family: 'Open-Sans';
+  font-size: 18px;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.secondary-button-add {
+  width: 100%;
+}
